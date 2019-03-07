@@ -1,6 +1,6 @@
 # gatsby-plugin-dark-mode
 
-A plugin for Gatsby which handles some of the details of implementing a dark mode theme.
+A Gatsby plugin which handles some of the details of implementing a dark mode theme.
 
 It provides:
 
@@ -42,7 +42,7 @@ class MyComponent extends React.Component {
           <label>
             <input
               type="checkbox"
-              onClick={e => toggleTheme(e.target.checked ? 'dark' : 'light')}
+              onChange={e => toggleTheme(e.target.checked ? 'dark' : 'light')}
               checked={theme === 'dark'}
             />{' '}
             Dark mode
