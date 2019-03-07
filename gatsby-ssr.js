@@ -1,7 +1,18 @@
-'use strict'
+const React = require('react')
 
-exports.onClientEntry = function() {
+exports.onRenderBody = function({ setPreBodyComponents }) {
+  setPreBodyComponents([
+    React.createElement('script', {
+      key: 'gatsby-plugin-dark-mode',
+      dangerouslySetInnerHTML: {
+        __html: `
+void function() {
   window.__onThemeChange = function() {}
+
+  var preferredTheme
+  try {
+    preferredTheme = localStorage.getItem('theme')
+  } catch (err) { }
 
   function setTheme(newTheme) {
     window.__theme = newTheme
@@ -9,11 +20,6 @@ exports.onClientEntry = function() {
     document.body.className = newTheme
     window.__onThemeChange(newTheme)
   }
-
-  var preferredTheme
-  try {
-    preferredTheme = localStorage.getItem('theme')
-  } catch (err) {}
 
   window.__setPreferredTheme = function(newTheme) {
     setTheme(newTheme)
@@ -28,4 +34,9 @@ exports.onClientEntry = function() {
   })
 
   setTheme(preferredTheme || (darkQuery.matches ? 'dark' : 'light'))
+}()
+    `,
+      },
+    }),
+  ])
 }
