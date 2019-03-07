@@ -1,7 +1,7 @@
 {
   "name": "gatsby-plugin-dark-mode",
   "version": "1.1.0",
-  "description": "A theme toggling plugin for Gatsby with default handling for implementing a dark mode theme",
+  "description": "A Gatsby plugin which handles some of the details of implementing a dark mode theme",
   "main": "index.js",
   "files": [
     "*.js"
