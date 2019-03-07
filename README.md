@@ -136,6 +136,6 @@ Wordpress2016.overrideThemeStyles = () => ({
 
 ## Acknowledgements
 
-Theme switching code and the suggested theming implementation are based on [overreacted.io](https://github.com/gaearon/overreacted.io) by [Dan Abramov](https://github.com/gaearon).
+The theme detecting/switching/persistence code and the suggested theming implementation are entirely from the [implementation of overreacted.io](https://github.com/gaearon/overreacted.io) by [Dan Abramov](https://twitter.com/dan_abramov) - I'm just publishing them as a plugin to make them easier to use in my own blog, and for reuse by others.
 
 ## MIT Licensed
