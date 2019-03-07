@@ -1,6 +1,12 @@
 # gatsby-plugin-dark-mode
 
-A theme toggling plugin for Gatsby with default handling for implementing a dark mode theme, and a React component for implementing theme toggling.
+A plugin for Gatsby which handles some of the details of implementing a dark mode theme.
+
+It provides:
+
+- Browser code for toggling and persisting the theme (from [Dan Abramov](https://twitter.com/dan_abramov)'s [overreacted.io](https://overreacted.io) implementation)
+- Automatic use of a dark mode theme (via the `prefers-color-scheme` [CSS media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)) if you've configured your system to use dark colour themes when available.
+- A [React](https://reactjs.org) component for implementing theme toggling UI in your site.
 
 ## Install
 
@@ -8,19 +14,57 @@ A theme toggling plugin for Gatsby with default handling for implementing a dark
 npm install gatsby-plugin-dark-mode
 ```
 
+```js
+// gatsby-config.js
+
+module.exports = {
+  plugins: ['gatsby-plugin-dark-mode'],
+}
+```
+
 ## How to use
+
+### Implement theme toggling UI
+
+The plugin module exports a `ThemeToggler` component which takes a `children` [render prop](https://reactjs.org/docs/render-props.html), providing the current `theme` name and a `toggleTheme` function to change the theme.
+
+Here's an example of using `ThemeToggler` with a checkbox to toggle the theme:
+
+```jsx
+import React from 'react'
+import { ThemeToggler } from 'gatsby-plugin-dark-mode'
+
+class MyComponent extends React.Component {
+  render() {
+    return (
+      <ThemeToggler>
+        {({ theme, toggleTheme }) => (
+          <label>
+            <input
+              type="checkbox"
+              onClick={e => toggleTheme(e.target.checked ? 'dark' : 'light')}
+              checked={theme === 'dark'}
+            />{' '}
+            Dark mode
+          </label>
+        )}
+      </ThemeToggler>
+    )
+  }
+}
+```
+
+The toggled theme will be persisted across visits in `localStorage.theme`.
 
 ### Implement theming
 
-The default theme names are `'light'` and `'dark'`.
+The default theme names are `'light'` and `'dark'` - the plugin adds the current theme name to the `<body>` element's `className`, so you can use [global styles](https://www.gatsbyjs.org/docs/creating-global-styles) to implement theming.
 
-The `'dark'` theme will be used automatically (via the [`prefers-color-scheme` CSS media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)) if you've requested that your system use a dark colour theme.
-
-The plugin will handle adding the current theme name to the `<body>` element as a `className`, so you can use [global styles](https://www.gatsbyjs.org/docs/creating-global-styles) to implement theming.
-
-One option is to use CSS variables like so:
+A nice option is to use CSS variables like so:
 
 ```css
+/* global.css */
+
 body {
   --bg: white;
   --textNormal: #222;
@@ -62,9 +106,11 @@ class Layout extends React.Component {
 }
 ```
 
-...and in your [Typography config](https://www.gatsbyjs.org/docs/typography-js/#creating-the-typography-configuration) if you're using [`gatsby-plugin-typography`](https://www.gatsbyjs.org/docs/typography-js) (which is included in the [Gatsby Starter Blog](https://www.gatsbyjs.org/starters/gatsbyjs/gatsby-starter-blog/)):
+...and in your [Typography config](https://www.gatsbyjs.org/docs/typography-js/#creating-the-typography-configuration) if you're using `gatsby-plugin-typography`, which is included in the [Gatsby Starter Blog](https://www.gatsbyjs.org/starters/gatsbyjs/gatsby-starter-blog/):
 
 ```js
+// typography.js
+
 import './global.css'
 
 import Typography from 'typography'
@@ -87,36 +133,6 @@ Wordpress2016.overrideThemeStyles = () => ({
   },
 })
 ```
-
-### Implement theme toggling
-
-The plugin provides a `ThemeToggler` component which takes a `children` [render prop](https://reactjs.org/docs/render-props.html), providing the current `theme` name and a `toggleTheme` function to change the theme:
-
-```jsx
-import React from 'react'
-import { ThemeToggler } from 'gatsby-plugin-dark-mode'
-
-class MyComponent extends React.Component {
-  render() {
-    return (
-      <ThemeToggler>
-        {({ theme, toggleTheme }) => (
-          <label>
-            <input
-              type="checkbox"
-              onClick={e => toggleTheme(e.target.checked ? 'dark' : 'light')}
-              checked={theme === 'dark'}
-            />{' '}
-            Dark mode
-          </label>
-        )}
-      </ThemeToggler>
-    )
-  }
-}
-```
-
-The toggled theme will be persisted across visits in `localStorage.theme`.
 
 ## Acknowledgements
 
