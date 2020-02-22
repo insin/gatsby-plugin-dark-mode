@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 class ThemeToggler extends React.Component {
   state = {
-    theme: null,
+    theme: window.__theme,
   }
 
   componentDidMount() {
