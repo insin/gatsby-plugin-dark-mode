@@ -17,7 +17,9 @@ void function() {
   function setTheme(newTheme) {
     window.__theme = newTheme
     preferredTheme = newTheme
-    document.body.className = newTheme
+    document.body.className.match(/dark|light/g) !== null 
+      ? document.body.classList.replace(newTheme === 'dark' ? 'light' : 'dark', newTheme)
+      : document.body.classList.add(newTheme)
     window.__onThemeChange(newTheme)
   }
 
