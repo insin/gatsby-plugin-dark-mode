@@ -38,16 +38,26 @@ class MyComponent extends React.Component {
   render() {
     return (
       <ThemeToggler>
-        {({ theme, toggleTheme }) => (
-          <label>
-            <input
-              type="checkbox"
-              onChange={e => toggleTheme(e.target.checked ? 'dark' : 'light')}
-              checked={theme === 'dark'}
-            />{' '}
-            Dark mode
-          </label>
-        )}
+        {({ theme, toggleTheme }) => {
+          // Don't render anything at compile time. Deferring rendering until we
+          // know which theme to use on the client avoids incorrect initial
+          // state being displayed.
+          if (theme == null) {
+            return null
+          }
+          return (
+            <label>
+              <input
+                type="checkbox"
+                onChange={(e) =>
+                  toggleTheme(e.target.checked ? 'dark' : 'light')
+                }
+                checked={theme === 'dark'}
+              />{' '}
+              Dark mode
+            </label>
+          )
+        }}
       </ThemeToggler>
     )
   }
