@@ -7,6 +7,7 @@ It provides:
 - Browser code for toggling and persisting the theme (from [Dan Abramov](https://twitter.com/dan_abramov)'s [overreacted.io](https://overreacted.io) implementation)
 - Automatic use of a dark mode theme (via the `prefers-color-scheme` [CSS media query](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)) if you've configured your system to use dark colour themes when available.
 - A [React](https://reactjs.org) component for implementing theme toggling UI in your site.
+- An optional option for adding the toogle class in `body` or `html`.
 
 ## Install
 
@@ -18,8 +19,25 @@ npm install gatsby-plugin-dark-mode
 // gatsby-config.js
 
 module.exports = {
-  plugins: ['gatsby-plugin-dark-mode'],
-}
+  plugins: ["gatsby-plugin-dark-mode"],
+};
+```
+
+Or if you want to add the toggle class in the `html` tag.
+
+```js
+// gatsby-config.js
+
+module.exports = {
+  plugins: [
+    {
+      resolve: `gatsby-plugin-dark-mode`,
+      options: {
+        node: "html",
+      },
+    },
+  ],
+};
 ```
 
 ## How to use
@@ -31,8 +49,8 @@ The plugin module exports a `ThemeToggler` component which takes a `children` [r
 Here's an example of using `ThemeToggler` with a checkbox to toggle the theme:
 
 ```jsx
-import React from 'react'
-import { ThemeToggler } from 'gatsby-plugin-dark-mode'
+import React from "react";
+import { ThemeToggler } from "gatsby-plugin-dark-mode";
 
 class MyComponent extends React.Component {
   render() {
@@ -43,23 +61,23 @@ class MyComponent extends React.Component {
           // know which theme to use on the client avoids incorrect initial
           // state being displayed.
           if (theme == null) {
-            return null
+            return null;
           }
           return (
             <label>
               <input
                 type="checkbox"
                 onChange={(e) =>
-                  toggleTheme(e.target.checked ? 'dark' : 'light')
+                  toggleTheme(e.target.checked ? "dark" : "light")
                 }
-                checked={theme === 'dark'}
-              />{' '}
+                checked={theme === "dark"}
+              />{" "}
               Dark mode
             </label>
-          )
+          );
         }}
       </ThemeToggler>
-    )
+    );
   }
 }
 ```
@@ -104,14 +122,14 @@ class Layout extends React.Component {
     return (
       <div
         style={{
-          backgroundColor: 'var(--bg)',
-          color: 'var(--textNormal)',
-          transition: 'color 0.2s ease-out, background 0.2s ease-out',
+          backgroundColor: "var(--bg)",
+          color: "var(--textNormal)",
+          transition: "color 0.2s ease-out, background 0.2s ease-out",
         }}
       >
         ...
       </div>
-    )
+    );
   }
 }
 ```
@@ -121,27 +139,27 @@ class Layout extends React.Component {
 ```js
 // typography.js
 
-import './global.css'
+import "./global.css";
 
-import Typography from 'typography'
-import Wordpress2016 from 'typography-theme-wordpress-2016'
+import Typography from "typography";
+import Wordpress2016 from "typography-theme-wordpress-2016";
 
 Wordpress2016.overrideThemeStyles = () => ({
   a: {
-    color: 'var(--textLink)',
+    color: "var(--textLink)",
   },
   // gatsby-remark-autolink-headers - don't underline when hidden
-  'a.anchor': {
-    boxShadow: 'none',
+  "a.anchor": {
+    boxShadow: "none",
   },
   // gatsby-remark-autolink-headers - use theme colours for the link icon
   'a.anchor svg[aria-hidden="true"]': {
-    stroke: 'var(--textLink)',
+    stroke: "var(--textLink)",
   },
   hr: {
-    background: 'var(--hr)',
+    background: "var(--hr)",
   },
-})
+});
 ```
 
 ## Acknowledgements

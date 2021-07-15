@@ -1,9 +1,10 @@
-const React = require('react')
+const React = require("react");
 
-exports.onRenderBody = function({ setPreBodyComponents }) {
+exports.onRenderBody = function ({ setPreBodyComponents }, { node }) {
+  const defaultHtmlNode = node ?? "body";
   setPreBodyComponents([
-    React.createElement('script', {
-      key: 'gatsby-plugin-dark-mode',
+    React.createElement("script", {
+      key: "gatsby-plugin-dark-mode",
       dangerouslySetInnerHTML: {
         __html: `
 void function() {
@@ -15,10 +16,15 @@ void function() {
   } catch (err) { }
 
   function setTheme(newTheme) {
-    if (preferredTheme && document.body.classList.contains(preferredTheme)) {
-      document.body.classList.replace(preferredTheme, newTheme)
+    const htmlTag = ${
+      defaultHtmlNode === "html"
+        ? `document.getElementsByTagName( 'html' )[0]`
+        : `document.body`
+    };
+    if (preferredTheme && htmlTag.classList.contains(preferredTheme)) {
+      htmlTag.classList.replace(preferredTheme, newTheme)
     } else {
-      document.body.classList.add(newTheme)
+      htmlTag.classList.add(newTheme)
     }
 
     window.__theme = newTheme
@@ -43,5 +49,5 @@ void function() {
     `,
       },
     }),
-  ])
-}
+  ]);
+};
